@@ -1,6 +1,7 @@
 <ul class="list-group">
   <li
     class="list-group-item"
+    [ngClass]="{ selected: book.id === selectedBook?.id}"
     *ngFor="let book of books"
     (click)="selectBook(book)">
     {{ book.title }}, <em>{{ book.author }}</em>
@@ -22,7 +23,8 @@
     <textarea #description id="descripton" class="form-control" rows="6">{{ selectedBook.description }}</textarea>
   </div>
 
-  <div class="nav justify-content-end mt-3">
+  <div class="d-md-flex justify-content-md-end gap-2 mt-3">
+    <button class="btn btn-light" (click)="cancelEditing()">Cancel</button>
     <button class="btn btn-primary" (click)="saveBook()">Save</button>
   </div>
 </section>

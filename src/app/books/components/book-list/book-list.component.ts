@@ -42,4 +42,8 @@ export class BookListComponent {
       this.books = this.bookService.getBooks();
     }
   }
+
+  cancelEditing(): void {
+    this.selectedBook = null;
+  }
 }
