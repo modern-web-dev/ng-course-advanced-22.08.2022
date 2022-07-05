@@ -11,6 +11,7 @@ import { BookListComponent } from './components/book-list/book-list.component';
   ],
   imports: [
     CommonModule
-  ]
+  ],
+  providers: []
 })
 export class BooksModule { }

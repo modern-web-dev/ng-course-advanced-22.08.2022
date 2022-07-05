@@ -5,9 +5,9 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 describe('BookListComponent', () => {
 
   let component: BookListComponent;
+  let bookService: BookService;
 
   describe('[class]', () => {
-    let bookService: BookService;
 
     beforeEach(() => {
       bookService = new BookService();
@@ -50,16 +50,20 @@ describe('BookListComponent', () => {
     const clickBookAt = (position: number) => bookAt(position).dispatchEvent(new MouseEvent('click'));
     const clickCancel = () => cancelButton().dispatchEvent(new MouseEvent('click'));
     const clickSave = () => saveButton().dispatchEvent(new MouseEvent('click'));
+    const editField = (field: HTMLInputElement | HTMLTextAreaElement, value: string) => field.value = value;
     const cd = () => fixture.detectChanges();
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        declarations: [BookListComponent]
+        declarations: [BookListComponent],
+        providers: []
       }).compileComponents();
     });
 
     beforeEach(() => {
       fixture = TestBed.createComponent(BookListComponent);
+      // bookService = TestBed.inject(BookService);
+      bookService = fixture.debugElement.injector.get(BookService);
       component = fixture.componentInstance;
       nativeElement = fixture.nativeElement;
       fixture.detectChanges();
@@ -104,6 +108,25 @@ describe('BookListComponent', () => {
       // then
       expect(editor()).toBeFalsy();
       expect(component.selectedBook).toBeNull();
+    });
+
+    it('saves modified book to the books service', () => {
+      // given
+      clickBookAt(1);
+      cd();
+      expect(editor()).toBeTruthy();
+      // when
+      editField(titleElement(), "New title");
+      editField(authorElement(), "New author");
+      editField(descriptionElement(), "New description");
+      clickSave();
+      cd();
+      // then
+      expect(editor()).toBeFalsy();
+      expect(component.selectedBook).toBeNull();
+      // const updatedBook = component.books[1];
+      const updatedBook = bookService.getBooks()[1];
+      expect(updatedBook.title).toEqual('New title');
     });
   });
 });
