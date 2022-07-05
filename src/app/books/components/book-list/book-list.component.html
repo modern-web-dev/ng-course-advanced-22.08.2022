@@ -1,3 +1,28 @@
 <ul class="list-group">
-  <li class="list-group-item" *ngFor="let book of books">{{ book.title }}, <em>{{ book.author }}</em></li>
+  <li
+    class="list-group-item"
+    *ngFor="let book of books"
+    (click)="selectBook(book)">
+    {{ book.title }}, <em>{{ book.author }}</em>
+  </li>
 </ul>
+
+<section *ngIf="selectedBook" class="mt-4">
+  <p class="lead">Edit selected book</p>
+  <div>
+    <label for="title" class="form-label">Title</label>
+    <input #title type="text" id="title" class="form-control" [value]="selectedBook.title">
+  </div>
+  <div class="mt-2">
+    <label for="author" class="form-label">Author</label>
+    <input #author type="text" id="author" class="form-control" [value]="selectedBook.author">
+  </div>
+  <div class="mt-2">
+    <label for="descripton" class="form-label">Description</label>
+    <textarea #description id="descripton" class="form-control" rows="6">{{ selectedBook.description }}</textarea>
+  </div>
+
+  <div class="nav justify-content-end mt-3">
+    <button class="btn btn-primary" (click)="saveBook()">Save</button>
+  </div>
+</section>

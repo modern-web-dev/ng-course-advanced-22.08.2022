@@ -26,4 +26,8 @@ export class BookService {
   getBooks(): Book[] {
     return this.books;
   }
+
+  save(book: Book): void {
+    this.books = this.books.map(value => value.id === book.id ? book : value);
+  }
 }
