@@ -1,25 +1,61 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { BookListComponent } from './book-list.component';
+import {BookListComponent} from "./book-list.component";
+import {BookService} from "../../services/book.service";
+import {ComponentFixture, TestBed} from "@angular/core/testing";
 
 describe('BookListComponent', () => {
+
   let component: BookListComponent;
-  let fixture: ComponentFixture<BookListComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ BookListComponent ]
-    })
-    .compileComponents();
+  describe('[class]', () => {
+    let bookService: BookService;
+
+    beforeEach(() => {
+      bookService = new BookService();
+      component = new BookListComponent(bookService);
+    });
+
+    it('should have no book selected initially', () => {
+      expect(component.selectedBook).toBeNull();
+    });
+
+    it('should be possible to select a book', () => {
+      // when
+      component.selectBook(bookService.getBooks()[1]);
+      // then
+      expect(component.selectedBook).toBeTruthy();
+      expect(component.selectedBook).toBe(bookService.getBooks()[1]);
+    });
+
+    it('should contain books initially', () => {
+      expect(component.books).toHaveSize(3);
+    });
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(BookListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  describe('[DOM]', () => {
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    let fixture: ComponentFixture<BookListComponent>;
+    let nativeElement: HTMLElement;
+
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [BookListComponent]
+      }).compileComponents();
+    });
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(BookListComponent);
+      component = fixture.componentInstance;
+      nativeElement = fixture.nativeElement;
+      fixture.detectChanges();
+    });
+
+    it('can be created', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('renders a list of books', () => {
+      const liElements = nativeElement.querySelectorAll('li.list-group-item');
+      expect(liElements.length).toBe(3);
+    });
   });
 });
