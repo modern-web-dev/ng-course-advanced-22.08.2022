@@ -112,6 +112,7 @@ describe('BookListComponent', () => {
 
     it('saves modified book to the books service', () => {
       // given
+      spyOn(bookService, 'save').and.callThrough();
       clickBookAt(1);
       cd();
       expect(editor()).toBeTruthy();
@@ -127,6 +128,12 @@ describe('BookListComponent', () => {
       // const updatedBook = component.books[1];
       const updatedBook = bookService.getBooks()[1];
       expect(updatedBook.title).toEqual('New title');
+      expect(bookService.save).toHaveBeenCalledOnceWith({
+        id: 2,
+        title: 'New title',
+        author: 'New author',
+        description: 'New description'
+      });
     });
   });
 });
