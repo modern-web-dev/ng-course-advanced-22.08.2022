@@ -36,6 +36,22 @@ describe('BookListComponent', () => {
     let fixture: ComponentFixture<BookListComponent>;
     let nativeElement: HTMLElement;
 
+    // utility functions
+    // nouns
+    const editor = () => nativeElement.querySelector('#editor');
+    const bookList = () => nativeElement.querySelectorAll('li.list-group-item');
+    const bookAt = (position: number) => bookList().item(position) as HTMLLIElement;
+    const titleElement = () => nativeElement.querySelector("input#title") as HTMLInputElement;
+    const authorElement = () => nativeElement.querySelector("input#author") as HTMLInputElement;
+    const descriptionElement = () => nativeElement.querySelector('textarea#description') as HTMLTextAreaElement;
+    const cancelButton = () => nativeElement.querySelector("button#cancel") as HTMLButtonElement;
+    const saveButton = () => nativeElement.querySelector("button#save") as HTMLButtonElement;
+    // verbs
+    const clickBookAt = (position: number) => bookAt(position).dispatchEvent(new MouseEvent('click'));
+    const clickCancel = () => cancelButton().dispatchEvent(new MouseEvent('click'));
+    const clickSave = () => saveButton().dispatchEvent(new MouseEvent('click'));
+    const cd = () => fixture.detectChanges();
+
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         declarations: [BookListComponent]
@@ -54,8 +70,40 @@ describe('BookListComponent', () => {
     });
 
     it('renders a list of books', () => {
-      const liElements = nativeElement.querySelectorAll('li.list-group-item');
-      expect(liElements.length).toBe(3);
+      expect(bookList().length).toBe(3);
+    });
+
+    it('selected a book on clicking', () => {
+      // given
+      const bookIndex = 1;
+      expect(component.selectedBook).toBeNull();
+      expect(editor()).toBeFalsy();
+      // when
+      clickBookAt(bookIndex);
+      cd();
+      // then
+      expect(editor()).toBeTruthy();
+      const toBeSelected = component.books[bookIndex];
+      expect(component.selectedBook).toEqual(toBeSelected);
+      expect(titleElement().value).toEqual(toBeSelected.title);
+      expect(authorElement().value).toEqual(toBeSelected.author);
+      expect(descriptionElement().value).toEqual(toBeSelected.description);
+      expect(bookAt(0).classList.contains('selected')).toBeFalsy();
+      expect(bookAt(1).classList.contains('selected')).toBeTruthy();
+    });
+
+    it('closes editor after clicking cancel', () => {
+      // given
+      expect(component.selectedBook).toBeNull();
+      clickBookAt(1);
+      cd();
+      expect(editor()).toBeTruthy();
+      // when
+      clickCancel();
+      cd();
+      // then
+      expect(editor()).toBeFalsy();
+      expect(component.selectedBook).toBeNull();
     });
   });
 });

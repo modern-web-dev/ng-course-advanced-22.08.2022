@@ -8,7 +8,7 @@
   </li>
 </ul>
 
-<section *ngIf="selectedBook" class="mt-4">
+<section *ngIf="selectedBook" class="mt-4" id="editor">
   <p class="lead">Edit selected book</p>
   <div>
     <label for="title" class="form-label">Title</label>
@@ -19,12 +19,12 @@
     <input #author type="text" id="author" class="form-control" [value]="selectedBook.author">
   </div>
   <div class="mt-2">
-    <label for="descripton" class="form-label">Description</label>
-    <textarea #description id="descripton" class="form-control" rows="6">{{ selectedBook.description }}</textarea>
+    <label for="description" class="form-label">Description</label>
+    <textarea #description id="description" class="form-control" rows="6">{{ selectedBook.description }}</textarea>
   </div>
 
   <div class="d-md-flex justify-content-md-end gap-2 mt-3">
-    <button class="btn btn-light" (click)="cancelEditing()">Cancel</button>
-    <button class="btn btn-primary" (click)="saveBook()">Save</button>
+    <button id="cancel" class="btn btn-light" (click)="cancelEditing()">Cancel</button>
+    <button id="save" class="btn btn-primary" (click)="saveBook()">Save</button>
   </div>
 </section>
