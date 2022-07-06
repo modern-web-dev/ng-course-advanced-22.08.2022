@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {BookService} from "../../services/book.service";
 import {Book} from "../../model/book";
-import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {errorToMessage} from "../../../shared/util/error-util";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-book-list',
@@ -70,16 +69,6 @@ export class BookListComponent {
       fc.enable();
     } else {
       fc.disable();
-    }
-  }
-
-  dumpErrors(errors: ValidationErrors | null): string {
-    console.log('dump errors is called');
-    if (errors) {
-      const errorKeys = Object.keys(errors);
-      return errorKeys.map(errorKey => errorToMessage(errorKey, errors[errorKey])).join(" ");
-    } else {
-      return "";
     }
   }
 }
