@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookListComponent } from './components/book-list/book-list.component';
-import {FormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -11,8 +11,7 @@ import {FormsModule} from "@angular/forms";
     BookListComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule
+    CommonModule, ReactiveFormsModule
   ],
   providers: []
 })

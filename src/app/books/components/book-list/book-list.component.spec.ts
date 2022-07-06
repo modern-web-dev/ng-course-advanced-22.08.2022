@@ -1,7 +1,7 @@
 import {BookListComponent} from "./book-list.component";
 import {BookService} from "../../services/book.service";
-import {ComponentFixture, fakeAsync, TestBed, tick} from "@angular/core/testing";
-import {FormsModule} from "@angular/forms";
+import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('BookListComponent', () => {
 
@@ -60,7 +60,7 @@ describe('BookListComponent', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         declarations: [BookListComponent],
-        imports: [FormsModule],
+        imports: [ReactiveFormsModule],
         providers: []
       }).compileComponents();
     });
@@ -82,7 +82,7 @@ describe('BookListComponent', () => {
       expect(bookList().length).toBe(3);
     });
 
-    it('selected a book on clicking', (done) => {
+    it('selected a book on clicking', () => {
       // given
       const bookIndex = 1;
       expect(component.selectedBook).toBeNull();
@@ -101,18 +101,9 @@ describe('BookListComponent', () => {
       expect(bookAt(0).classList.contains('selected')).toBeFalsy();
       expect(bookAt(1).classList.contains('selected')).toBeTruthy();
 
-      // solution (1)
-      fixture.whenStable().then(() => {
-        expect(titleElement().value).toEqual(toBeSelected.title);
-        expect(authorElement().value).toEqual(toBeSelected.author);
-        expect(descriptionElement().value).toEqual(toBeSelected.description);
-        done();
-      });
-
-      // solution (2)
-      // expect(titleElement().value).toEqual(toBeSelected.title);
-      // expect(authorElement().value).toEqual(toBeSelected.author);
-      // expect(descriptionElement().value).toEqual(toBeSelected.description);
+      expect(titleElement().value).toEqual(toBeSelected.title);
+      expect(authorElement().value).toEqual(toBeSelected.author);
+      expect(descriptionElement().value).toEqual(toBeSelected.description);
     });
 
     it('closes editor after clicking cancel', () => {
@@ -129,12 +120,11 @@ describe('BookListComponent', () => {
       expect(component.selectedBook).toBeNull();
     });
 
-    it('saves modified book to the books service', fakeAsync(() => {
+    it('saves modified book to the books service', () => {
       // given
       spyOn(bookService, 'save').and.callThrough();
       clickBookAt(1);
       cd();
-      tick();
       expect(editor()).toBeTruthy();
       const toBeSelected = component.books[1];
       expect(titleElement().value).toEqual(toBeSelected.title);
@@ -158,6 +148,6 @@ describe('BookListComponent', () => {
         author: 'New author',
         description: 'New description'
       });
-    }));
+    });
   });
 });
