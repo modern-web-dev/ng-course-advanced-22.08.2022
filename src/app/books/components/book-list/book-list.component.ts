@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {BookService} from "../../services/book.service";
 import {Book} from "../../model/book";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-book-list',
@@ -21,9 +21,9 @@ export class BookListComponent {
     this.books = this.bookService.getBooks();
     this.formGroup = new FormGroup({
       id: new FormControl(),
-      title: new FormControl(),
-      author: new FormControl(),
-      description: new FormControl()
+      title: new FormControl('', [Validators.required, Validators.maxLength(30)]),
+      author: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      description: new FormControl('', Validators.maxLength(1000))
     });
   }
 
@@ -47,11 +47,12 @@ export class BookListComponent {
     // this.formGroup.setValue(bookForEditing);
 
     // 4th method (ultimate)
-    this.formGroup.setValue(this.selectedBook);
+    this.formGroup.enable();
+    this.formGroup.reset(this.selectedBook);
   }
 
   saveBook(): void {
-    if (this.selectedBook) {
+    if (this.selectedBook && this.formGroup.valid) {
       this.bookService.save(this.formGroup.value);
       this.selectedBook = null;
       this.books = this.bookService.getBooks();
@@ -60,5 +61,14 @@ export class BookListComponent {
 
   cancelEditing(): void {
     this.selectedBook = null;
+  }
+
+  toggleDisable(): void {
+    const fc = this.formGroup;
+    if(fc.disabled) {
+      fc.enable();
+    } else {
+      fc.disable();
+    }
   }
 }
