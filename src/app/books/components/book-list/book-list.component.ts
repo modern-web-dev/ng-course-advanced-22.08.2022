@@ -74,6 +74,7 @@ export class BookListComponent {
   }
 
   dumpErrors(errors: ValidationErrors | null): string {
+    console.log('dump errors is called');
     if (errors) {
       const errorKeys = Object.keys(errors);
       return errorKeys.map(errorKey => errorToMessage(errorKey, errors[errorKey])).join(" ");

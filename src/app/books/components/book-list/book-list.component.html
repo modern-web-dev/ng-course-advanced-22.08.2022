@@ -22,14 +22,14 @@
       <label for="author" class="form-label">Author *</label>
       <input type="text" id="author" class="form-control" formControlName="author">
       <div class="invalid-feedback">
-        Author is invalid.
+        {{ dumpErrors(formGroup.controls.author.errors) }}
       </div>
     </div>
     <div class="mt-2">
       <label for="description" class="form-label">Description</label>
       <textarea id="description" class="form-control" rows="6" formControlName="description"></textarea>
       <div class="invalid-feedback">
-        Description is invalid.
+        {{ dumpErrors(formGroup.controls.description.errors) }}
       </div>
     </div>
 
