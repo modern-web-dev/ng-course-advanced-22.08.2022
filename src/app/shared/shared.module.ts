@@ -15,7 +15,7 @@ import {FormsModule} from "@angular/forms";
     ErrorMsgPipe, InputComponent
   ],
   imports: [
-    CommonModule, FormsModule
+    CommonModule
   ]
 })
 export class SharedModule { }

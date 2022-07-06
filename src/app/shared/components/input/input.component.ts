@@ -1,4 +1,4 @@
-import {Component, Input, Optional, Self} from '@angular/core';
+import {Component, ElementRef, Input, Optional, Self, ViewChild} from '@angular/core';
 import {ControlValueAccessor, NgControl} from "@angular/forms";
 
 @Component({
@@ -8,9 +8,8 @@ import {ControlValueAccessor, NgControl} from "@angular/forms";
 })
 export class InputComponent implements ControlValueAccessor {
 
-  innerValue = '';
-
-  disabled = false;
+  @ViewChild("editor", { static: true })
+  inputElement!: ElementRef<HTMLInputElement>;
 
   @Input()
   inputId = '';
@@ -40,14 +39,14 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.innerValue = value;
+    this.inputElement.nativeElement.value = value;
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.inputElement.nativeElement.disabled = isDisabled;
   }
 
-  onInput($event: Event) {
-    console.log($event);
+  onInput() {
+    this.onChangeCallback(this.inputElement.nativeElement.value);
   }
 }

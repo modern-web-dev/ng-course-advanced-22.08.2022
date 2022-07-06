@@ -1,12 +1,11 @@
 <label [for]="inputId" class="form-label">{{ label }} <span *ngIf="mandatory">*</span></label>
 <input
+  #editor
   type="text"
   [id]="inputId"
-  [ngModel]="innerValue"
-  (ngModelChange)="onChangeCallback($event)"
-  [disabled]="disabled"
+  (input)="onInput()"
   autocomplete="off"
-  [ngClass]="{ 'ng-invalid': control?.invalid, 'ng-valid': control?.valid }"
+  [ngClass]="{ 'ng-invalid': control?.invalid, 'ng-valid': control?.valid, 'ng-touched': control?.touched, 'ng-untouched': control?.untouched }"
   (blur)="onTouchedCallback()"
   class="form-control">
 <div class="invalid-feedback">

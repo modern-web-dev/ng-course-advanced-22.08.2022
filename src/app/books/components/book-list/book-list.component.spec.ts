@@ -2,6 +2,7 @@ import {BookListComponent} from "./book-list.component";
 import {BookService} from "../../services/book.service";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "../../../shared/shared.module";
 
 describe('BookListComponent', () => {
 
@@ -60,7 +61,7 @@ describe('BookListComponent', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         declarations: [BookListComponent],
-        imports: [ReactiveFormsModule],
+        imports: [ReactiveFormsModule, SharedModule],
         providers: []
       }).compileComponents();
     });
@@ -91,9 +92,6 @@ describe('BookListComponent', () => {
       clickBookAt(bookIndex);
       cd();
 
-      setTimeout(() => {
-        // code
-      });
       // then
       expect(editor()).toBeTruthy();
       const toBeSelected = component.books[bookIndex];
@@ -134,6 +132,7 @@ describe('BookListComponent', () => {
       editField(titleElement(), "New title");
       editField(authorElement(), "New author");
       editField(descriptionElement(), "New description");
+      cd();
       clickSave();
       cd();
       // then
