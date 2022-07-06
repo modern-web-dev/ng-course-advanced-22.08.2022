@@ -1,6 +1,7 @@
 import {BookListComponent} from "./book-list.component";
 import {BookService} from "../../services/book.service";
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {ComponentFixture, fakeAsync, TestBed, tick} from "@angular/core/testing";
+import {FormsModule} from "@angular/forms";
 
 describe('BookListComponent', () => {
 
@@ -23,7 +24,7 @@ describe('BookListComponent', () => {
       component.selectBook(bookService.getBooks()[1]);
       // then
       expect(component.selectedBook).toBeTruthy();
-      expect(component.selectedBook).toBe(bookService.getBooks()[1]);
+      expect(component.selectedBook).toEqual(bookService.getBooks()[1]);
     });
 
     it('should contain books initially', () => {
@@ -56,6 +57,7 @@ describe('BookListComponent', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         declarations: [BookListComponent],
+        imports: [FormsModule],
         providers: []
       }).compileComponents();
     });
@@ -77,7 +79,7 @@ describe('BookListComponent', () => {
       expect(bookList().length).toBe(3);
     });
 
-    it('selected a book on clicking', () => {
+    it('selected a book on clicking', (done) => {
       // given
       const bookIndex = 1;
       expect(component.selectedBook).toBeNull();
@@ -85,15 +87,29 @@ describe('BookListComponent', () => {
       // when
       clickBookAt(bookIndex);
       cd();
+
+      setTimeout(() => {
+        // code
+      });
       // then
       expect(editor()).toBeTruthy();
       const toBeSelected = component.books[bookIndex];
       expect(component.selectedBook).toEqual(toBeSelected);
-      expect(titleElement().value).toEqual(toBeSelected.title);
-      expect(authorElement().value).toEqual(toBeSelected.author);
-      expect(descriptionElement().value).toEqual(toBeSelected.description);
       expect(bookAt(0).classList.contains('selected')).toBeFalsy();
       expect(bookAt(1).classList.contains('selected')).toBeTruthy();
+
+      // solution (1)
+      fixture.whenStable().then(() => {
+        expect(titleElement().value).toEqual(toBeSelected.title);
+        expect(authorElement().value).toEqual(toBeSelected.author);
+        expect(descriptionElement().value).toEqual(toBeSelected.description);
+        done();
+      });
+
+      // solution (2)
+      // expect(titleElement().value).toEqual(toBeSelected.title);
+      // expect(authorElement().value).toEqual(toBeSelected.author);
+      // expect(descriptionElement().value).toEqual(toBeSelected.description);
     });
 
     it('closes editor after clicking cancel', () => {

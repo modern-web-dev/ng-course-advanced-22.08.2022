@@ -24,7 +24,6 @@ export class BookService {
   constructor() { }
 
   getBooks(): Book[] {
-    console.log('getBooks() is called');
     return JSON.parse(JSON.stringify(this.books));
   }
 
