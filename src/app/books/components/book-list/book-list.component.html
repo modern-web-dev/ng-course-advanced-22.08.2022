@@ -12,17 +12,10 @@
   <form (ngSubmit)="saveBook()" [formGroup]="formGroup">
     <p class="lead">Edit selected book</p>
     <div>
-      <app-input label="Title *" inputId="title" formControlName="title"></app-input>
-      <div class="invalid-feedback">
-        {{ formGroup.controls.title.errors | errorMsg : 'title' }}
-      </div>
+      <app-input label="Title" inputId="title" formControlName="title" [mandatory]="true"></app-input>
     </div>
     <div class="mt-2">
-      <label for="author" class="form-label">Author *</label>
-      <input type="text" id="author" class="form-control" formControlName="author">
-      <div class="invalid-feedback">
-        {{ formGroup.controls.author.errors | errorMsg : 'author' }}
-      </div>
+      <app-input label="Author" inputId="author" formControlName="author" [mandatory]="true"></app-input>
     </div>
     <div class="mt-2">
       <label for="description" class="form-label">Description</label>

@@ -1,21 +1,16 @@
-import {Component, Input} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Component, Input, Optional, Self} from '@angular/core';
+import {ControlValueAccessor, NgControl} from "@angular/forms";
 
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: InputComponent,
-      multi: true
-    }
-  ]
+  styleUrls: ['./input.component.scss']
 })
 export class InputComponent implements ControlValueAccessor {
 
   innerValue = '';
+
+  disabled = false;
 
   @Input()
   inputId = '';
@@ -23,20 +18,33 @@ export class InputComponent implements ControlValueAccessor {
   @Input()
   label = '';
 
+  @Input()
+  mandatory = false;
+
   onChangeCallback: (value: any) => void = (_: string) => {};
 
-  constructor() { }
+  onTouchedCallback: () => void = () => {};
+
+  constructor(@Optional() @Self() public control: NgControl) {
+    if (this.control) {
+      this.control.valueAccessor = this;
+    }
+  }
 
   registerOnChange(fn: (value: string) => void): void {
     this.onChangeCallback = fn;
   }
 
-  registerOnTouched(fn: any): void {
-
+  registerOnTouched(fn: () => void): void {
+    this.onTouchedCallback = fn;
   }
 
   writeValue(value: string): void {
     this.innerValue = value;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
   onInput($event: Event) {
