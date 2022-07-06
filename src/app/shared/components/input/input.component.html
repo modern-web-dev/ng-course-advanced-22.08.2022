@@ -1,0 +1,7 @@
+<label [for]="inputId" class="form-label">{{ label }}</label>
+<input
+  type="text"
+  [id]="inputId"
+  [ngModel]="innerValue"
+  (ngModelChange)="onChangeCallback($event)"
+  class="form-control">
