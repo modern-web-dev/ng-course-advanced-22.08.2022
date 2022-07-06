@@ -51,7 +51,10 @@ describe('BookListComponent', () => {
     const clickBookAt = (position: number) => bookAt(position).dispatchEvent(new MouseEvent('click'));
     const clickCancel = () => cancelButton().dispatchEvent(new MouseEvent('click'));
     const clickSave = () => saveButton().dispatchEvent(new MouseEvent('click'));
-    const editField = (field: HTMLInputElement | HTMLTextAreaElement, value: string) => field.value = value;
+    const editField = (field: HTMLInputElement | HTMLTextAreaElement, value: string) => {
+      field.value = value;
+      field.dispatchEvent(new Event('input'));
+    };
     const cd = () => fixture.detectChanges();
 
     beforeEach(async () => {
@@ -126,12 +129,17 @@ describe('BookListComponent', () => {
       expect(component.selectedBook).toBeNull();
     });
 
-    it('saves modified book to the books service', () => {
+    it('saves modified book to the books service', fakeAsync(() => {
       // given
       spyOn(bookService, 'save').and.callThrough();
       clickBookAt(1);
       cd();
+      tick();
       expect(editor()).toBeTruthy();
+      const toBeSelected = component.books[1];
+      expect(titleElement().value).toEqual(toBeSelected.title);
+      expect(authorElement().value).toEqual(toBeSelected.author);
+      expect(descriptionElement().value).toEqual(toBeSelected.description);
       // when
       editField(titleElement(), "New title");
       editField(authorElement(), "New author");
@@ -150,6 +158,6 @@ describe('BookListComponent', () => {
         author: 'New author',
         description: 'New description'
       });
-    });
+    }));
   });
 });
