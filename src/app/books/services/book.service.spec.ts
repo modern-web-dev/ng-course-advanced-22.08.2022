@@ -3,9 +3,11 @@ import { BookService } from './book.service';
 
 describe('BookService', () => {
   let service: BookService;
+  let httpClientMock: any;
 
   beforeEach(() => {
-    service = new BookService()
+    httpClientMock = {};
+    service = new BookService(httpClientMock);
   });
 
   it('should be created', () => {
