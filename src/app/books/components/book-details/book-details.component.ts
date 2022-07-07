@@ -56,7 +56,12 @@ export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, After
       id: new FormControl(),
       title: new FormControl('', [Validators.required, Validators.maxLength(30)]),
       author: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-      description: new FormControl('', Validators.maxLength(1000))
+      description: new FormControl('', Validators.maxLength(1000)),
+      edition: new FormGroup({
+        publisher: new FormControl(''),
+        publishYear: new FormControl('', [Validators.min(1900), Validators.max(2030)]),
+        editionNumber: new FormControl('', [Validators.min(1), Validators.max(100)])
+      })
     });
   }
 
