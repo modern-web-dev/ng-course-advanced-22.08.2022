@@ -19,7 +19,6 @@ import {Book} from "../../model/book";
 })
 export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
-  readonly formGroup: FormGroup;
 
   // Option 2 (preferrable)
   @Input()
@@ -49,19 +48,23 @@ export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, After
   @Output()
   editingCancelled = new EventEmitter<void>();
 
+  readonly formGroup: FormGroup;
+
+  readonly editionFormGroup: FormGroup;
+
   constructor() {
     console.log("BookDetailsComponent is constructed");
-    console.log(this.book);
+    this.editionFormGroup = new FormGroup({
+      publisher: new FormControl(''),
+      publishYear: new FormControl('', [Validators.min(1900), Validators.max(2030)]),
+      editionNumber: new FormControl('', [Validators.min(1), Validators.max(100)])
+    });
     this.formGroup = new FormGroup({
       id: new FormControl(),
       title: new FormControl('', [Validators.required, Validators.maxLength(30)]),
       author: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       description: new FormControl('', Validators.maxLength(1000)),
-      edition: new FormGroup({
-        publisher: new FormControl(''),
-        publishYear: new FormControl('', [Validators.min(1900), Validators.max(2030)]),
-        editionNumber: new FormControl('', [Validators.min(1), Validators.max(100)])
-      })
+      edition: this.editionFormGroup
     });
   }
 

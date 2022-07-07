@@ -13,17 +13,7 @@
       {{ formGroup.controls.description.errors | errorMsg : 'description' }}
     </div>
   </div>
-  <ng-container formGroupName="edition">
-    <div class="mt-2">
-      <app-input label="Publisher" inputId="publisher" formControlName="publisher"></app-input>
-    </div>
-    <div class="mt-2">
-      <app-input label="Publish year" inputId="publishYear" formControlName="publishYear"></app-input>
-    </div>
-    <div class="mt-2">
-      <app-input label="Edition number" inputId="editionNumber" formControlName="editionNumber"></app-input>
-    </div>
-  </ng-container>
+  <app-edition-details [formGroup]="editionFormGroup"></app-edition-details>
 
   <div class="d-md-flex justify-content-md-end gap-2 mt-3">
     <button type="button" class="btn btn-light" (click)="toggleDisable()">Disable/enable</button>
