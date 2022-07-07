@@ -3,7 +3,7 @@ import {Book} from "../model/book";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
-const API_PREFIX = "http://localhost:3000/api/books";
+const API_PREFIX = "/api/books";
 
 @Injectable()
 export class BookService implements OnDestroy {
