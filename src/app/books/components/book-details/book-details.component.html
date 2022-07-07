@@ -13,7 +13,7 @@
       {{ formGroup.controls.description.errors | errorMsg : 'description' }}
     </div>
   </div>
-  <app-edition-details [formGroup]="editionFormGroup"></app-edition-details>
+  <app-edition-details></app-edition-details>
 
   <div class="d-md-flex justify-content-md-end gap-2 mt-3">
     <button type="button" class="btn btn-light" (click)="toggleDisable()">Disable/enable</button>

@@ -7,10 +7,11 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges, ViewChild
 } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Book} from "../../model/book";
+import {EditionDetailsComponent} from "./edition-details/edition-details.component";
 
 @Component({
   selector: 'app-book-details',
@@ -19,28 +20,11 @@ import {Book} from "../../model/book";
 })
 export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
-
-  // Option 2 (preferrable)
   @Input()
   book: Book | undefined;
 
   @Input()
   foo: string | undefined;
-
-  // Option 1 (use with care!)
-  // private _book: Book | undefined;
-  //
-  // @Input()
-  // set book(value: Book | undefined) {
-  //   console.log('book changed');
-  //   this._book = value;
-  //   if(this._book) {
-  //     this.formGroup.setValue(this._book);
-  //   }
-  // }
-  // get book(): Book | undefined {
-  //   return this._book;
-  // }
 
   @Output()
   bookSaved = new EventEmitter<Book>();
@@ -48,23 +32,21 @@ export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, After
   @Output()
   editingCancelled = new EventEmitter<void>();
 
-  readonly formGroup: FormGroup;
+  @ViewChild(EditionDetailsComponent, { static: true })
+  set editionDetailsComponent(component: EditionDetailsComponent) {
+    this.formGroup.addControl('edition', component.formGroup);
+  }
 
-  readonly editionFormGroup: FormGroup;
+  readonly formGroup: FormGroup;
 
   constructor() {
     console.log("BookDetailsComponent is constructed");
-    this.editionFormGroup = new FormGroup({
-      publisher: new FormControl(''),
-      publishYear: new FormControl('', [Validators.min(1900), Validators.max(2030)]),
-      editionNumber: new FormControl('', [Validators.min(1), Validators.max(100)])
-    });
+
     this.formGroup = new FormGroup({
       id: new FormControl(),
       title: new FormControl('', [Validators.required, Validators.maxLength(30)]),
       author: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-      description: new FormControl('', Validators.maxLength(1000)),
-      edition: this.editionFormGroup
+      description: new FormControl('', Validators.maxLength(1000))
     });
   }
 
