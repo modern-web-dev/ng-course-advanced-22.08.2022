@@ -7,6 +7,6 @@ export enum BooksActionTypes {
   DeselectBook = '[Books] Deselect book'
 }
 
-export const setBookAction = createAction(BooksActionTypes.SetBooks, props<{ books: Book[]}>());
+export const setBooksAction = createAction(BooksActionTypes.SetBooks, props<{ books: Book[]}>());
 export const selectBookAction = createAction(BooksActionTypes.SelectBook, props<{ book: Book }>());
 export const deselectBookAction = createAction(BooksActionTypes.DeselectBook);

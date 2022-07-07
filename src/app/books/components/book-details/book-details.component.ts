@@ -22,7 +22,7 @@ import {EditionDetailsForm} from "./edition-details/edition-details.form";
 export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   @Input()
-  book: Book | undefined;
+  book: Book | undefined | null;
 
   @Input()
   foo: string | undefined;

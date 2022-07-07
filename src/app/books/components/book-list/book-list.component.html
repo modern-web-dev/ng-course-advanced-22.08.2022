@@ -1,16 +1,16 @@
 <ul class="list-group">
   <li
     class="list-group-item"
-    [ngClass]="{ selected: book.id === selectedBook?.id}"
+    [ngClass]="{ selected: book.id === (selectedBook$ | async)?.id}"
     *ngFor="let book of books$ | async"
     (click)="selectBook(book)">
     {{ book.title }}, <em>{{ book.author }}</em>
   </li>
 </ul>
 
-<section *ngIf="selectedBook" class="mt-4" id="editor">
+<section *ngIf="selectedBook$ | async" class="mt-4" id="editor">
   <app-book-details
-    [book]="selectedBook"
+    [book]="selectedBook$ | async"
     (editingCancelled)="cancelEditing()"
     (bookSaved)="saveBook($event)">
   </app-book-details>

@@ -1,6 +1,6 @@
 import {Book} from "../model/book";
 import {createReducer, on} from "@ngrx/store";
-import {deselectBookAction, selectBookAction, setBookAction} from "./books.actions";
+import {deselectBookAction, selectBookAction, setBooksAction} from "./books.actions";
 
 export const BOOKS_FEATURE = "books";
 
@@ -16,7 +16,7 @@ export const initialBooksState: BooksState = {
 
 export const booksStateReducer = createReducer(
   initialBooksState,
-  on(setBookAction, (state: BooksState, {books}) => ({...state, books: books})),
+  on(setBooksAction, (state: BooksState, {books}) => ({...state, books: books})),
   on(selectBookAction, (state: BooksState, {book}) => ({...state, selectedBook: book})),
   on(deselectBookAction, (state: BooksState) => ({...state, selectedBook: null}))
 )

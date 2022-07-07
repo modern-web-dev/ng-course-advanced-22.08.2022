@@ -1,8 +1,12 @@
 import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BookService} from "../../services/book.service";
 import {Book} from "../../model/book";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
+import {BooksState} from "../../store/books.reducer";
+import {select, Store} from "@ngrx/store";
+import {BooksSelector} from "../../store/books.selectors";
+import {deselectBookAction, selectBookAction, setBooksAction} from "../../store/books.actions";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-book-list',
@@ -12,13 +16,18 @@ import {Observable} from "rxjs";
 })
 export class BookListComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-  books$: Observable<Book[]>;
+  readonly books$: Observable<Book[]>;
+  readonly selectedBook$: Observable<Book | null>;
 
-  selectedBook: Book | null = null;
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(private readonly bookService: BookService) {
+  constructor(private readonly bookService: BookService, private readonly store: Store<BooksState>) {
     console.log('BookListComponent constructed');
-    this.books$ = this.bookService.getBooks();
+    this.books$ = this.store.pipe(select(BooksSelector.getBooks));
+    this.selectedBook$ = this.store.pipe(select(BooksSelector.getSelectedBook));
+    this.bookService.getBooks()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(books => this.store.dispatch(setBooksAction({books})))
   }
 
   ngOnInit(): void {
@@ -27,6 +36,8 @@ export class BookListComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   ngOnDestroy(): void {
     console.log('BookListComponent ngOnDestroy');
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -38,21 +49,21 @@ export class BookListComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   selectBook(book: Book): void {
-    this.selectedBook = book;
-    // this.formGroup.enable();
-    // this.formGroup.reset(this.selectedBook);
+    this.store.dispatch(selectBookAction({book: book}));
   }
 
   saveBook(book: Book): void {
-    if (this.selectedBook) {
-      this.bookService.save(book).subscribe(() => {
-        this.selectedBook = null;
-        this.books$ = this.bookService.getBooks();
+    this.bookService.save(book)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.bookService.getBooks()
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(books => this.store.dispatch(setBooksAction({books})));
+        this.store.dispatch(deselectBookAction());
       });
-    }
   }
 
   cancelEditing(): void {
-    this.selectedBook = null;
+    this.store.dispatch(deselectBookAction());
   }
 }
