@@ -34,7 +34,7 @@ export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, After
 
   @ViewChild(EditionDetailsComponent, { static: true })
   set editionDetailsComponent(component: EditionDetailsComponent) {
-    this.formGroup.addControl('edition', component.formGroup);
+    this.formGroup.addControl('edition', component.form.formGroup);
   }
 
   readonly formGroup: FormGroup;
