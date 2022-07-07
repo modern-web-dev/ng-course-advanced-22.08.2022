@@ -13,6 +13,11 @@ export class EditionDetailsForm {
   }
 
   extract(): Edition {
-    return this.formGroup.value;
+    const edition = this.formGroup.value;
+    return {
+      publisher: edition.publisher,
+      publishYear: Number.parseInt(edition.publishYear),
+      editionNumber: Number.parseInt(edition.editionNumber)
+    }
   }
 }

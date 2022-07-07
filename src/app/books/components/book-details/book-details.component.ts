@@ -12,6 +12,7 @@ import {
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Book} from "../../model/book";
 import {EditionDetailsComponent} from "./edition-details/edition-details.component";
+import {EditionDetailsForm} from "./edition-details/edition-details.form";
 
 @Component({
   selector: 'app-book-details',
@@ -32,8 +33,11 @@ export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, After
   @Output()
   editingCancelled = new EventEmitter<void>();
 
+  private editionDetailsForm!: EditionDetailsForm;
+
   @ViewChild(EditionDetailsComponent, { static: true })
   set editionDetailsComponent(component: EditionDetailsComponent) {
+    this.editionDetailsForm = component.form;
     this.formGroup.addControl('edition', component.form.formGroup);
   }
 
@@ -79,6 +83,13 @@ export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   saveBook(): void {
-    this.bookSaved.emit(this.formGroup.value);
+    const book:Book = {
+      id: this.formGroup.controls['id'].value,
+      title: this.formGroup.controls['title'].value,
+      author: this.formGroup.controls['author'].value,
+      description: this.formGroup.controls['description'].value,
+      edition: this.editionDetailsForm.extract()
+    }
+    this.bookSaved.emit(book);
   }
 }
