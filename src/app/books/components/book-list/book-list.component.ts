@@ -1,30 +1,48 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BookService} from "../../services/book.service";
 import {Book} from "../../model/book";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss'],
-  providers: [BookService]
+  providers: []
 })
-export class BookListComponent {
+export class BookListComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-  books: Book[];
+  books$: Observable<Book[]>;
 
   selectedBook: Book | null = null;
 
   readonly formGroup: FormGroup;
 
   constructor(private readonly bookService: BookService) {
-    this.books = this.bookService.getBooks();
+    console.log('BookListComponent constructed');
+    this.books$ = this.bookService.getBooks();
     this.formGroup = new FormGroup({
       id: new FormControl(),
       title: new FormControl('', [Validators.required, Validators.maxLength(30)]),
       author: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       description: new FormControl('', Validators.maxLength(1000))
     });
+  }
+
+  ngOnInit(): void {
+    console.log('BookListComponent ngOnInit');
+  }
+
+  ngOnDestroy(): void {
+    console.log('BookListComponent ngOnDestroy');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(`BookListComponent ngOnChanges: ${JSON.stringify(changes)}`);
+  }
+
+  ngAfterViewInit(): void {
+    console.log('BookListComponent ngAfterViewInit');
   }
 
   selectBook(book: Book): void {
@@ -53,9 +71,10 @@ export class BookListComponent {
 
   saveBook(): void {
     if (this.selectedBook && this.formGroup.valid) {
-      this.bookService.save(this.formGroup.value);
-      this.selectedBook = null;
-      this.books = this.bookService.getBooks();
+      this.bookService.save(this.formGroup.value).subscribe(() => {
+        this.selectedBook = null;
+        this.books$ = this.bookService.getBooks();
+      });
     }
   }
 

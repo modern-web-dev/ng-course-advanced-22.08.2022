@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { BookListComponent } from './components/book-list/book-list.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
+import {BookService} from "./services/book.service";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -12,8 +14,8 @@ import {SharedModule} from "../shared/shared.module";
     BookListComponent
   ],
   imports: [
-    CommonModule, ReactiveFormsModule, SharedModule
+    CommonModule, ReactiveFormsModule, SharedModule, HttpClientModule
   ],
-  providers: []
+  providers: [BookService]
 })
 export class BooksModule { }
