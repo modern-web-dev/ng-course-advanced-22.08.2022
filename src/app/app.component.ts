@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {CountryService} from "./shared/services/country.service";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  constructor(private readonly countryService: CountryService) {
+    // for(let i = 0; i < 10; i++) {
+    //   this.countryService.getCountries();
+    // }
+  }
 }

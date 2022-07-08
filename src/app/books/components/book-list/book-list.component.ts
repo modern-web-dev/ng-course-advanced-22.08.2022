@@ -10,6 +10,7 @@ import {
   saveBookAction,
   selectBookAction,
 } from "../../store/books.actions";
+import {CountryService} from "../../../shared/services/country.service";
 
 @Component({
   selector: 'app-book-list',
@@ -24,11 +25,13 @@ export class BookListComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private readonly store: Store<BooksState>) {
+  constructor(private readonly store: Store<BooksState>, private readonly countryService: CountryService) {
     console.log('BookListComponent constructed');
     this.books$ = this.store.pipe(select(BooksSelector.getBooks));
     this.selectedBook$ = this.store.pipe(select(BooksSelector.getSelectedBook));
     this.store.dispatch(loadBooksAction());
+    // this.countryService.getCountries()
+    //   .subscribe(countries => console.log(`BookListComponent ${JSON.stringify(countries)}`))
   }
 
   ngOnInit(): void {

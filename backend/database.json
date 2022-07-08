@@ -34,15 +34,16 @@
       }
     }
   ],
-  "stock": [
+  "countries": [
     {
-      "id": 1,
-      "bookId": 1,
-      "amount": 10,
-      "publisher": {
-        "name": "foo",
-        "year": 1990
-      }
+      "code": "DE",
+      "name": "Germany"
+    }, {
+      "code": "PL",
+      "name": "Poland"
+    }, {
+      "code": "EE",
+      "name": "Estonia"
     }
   ]
 }
