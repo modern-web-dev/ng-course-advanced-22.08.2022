@@ -9,6 +9,8 @@ import {BookDetailsComponent} from './components/book-details/book-details.compo
 import {EditionDetailsComponent} from './components/book-details/edition-details/edition-details.component';
 import {StoreModule} from "@ngrx/store";
 import {BOOKS_FEATURE, booksStateReducer} from "./store/books.reducer";
+import {EffectsModule} from "@ngrx/effects";
+import {BooksEffects} from "./store/books.effects";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import {BOOKS_FEATURE, booksStateReducer} from "./store/books.reducer";
     ReactiveFormsModule,
     SharedModule,
     HttpClientModule,
-    StoreModule.forFeature(BOOKS_FEATURE, booksStateReducer)
+    StoreModule.forFeature(BOOKS_FEATURE, booksStateReducer),
+    EffectsModule.forFeature([BooksEffects])
   ],
   providers: [BookService]
 })

@@ -1,12 +1,15 @@
 import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {BookService} from "../../services/book.service";
 import {Book} from "../../model/book";
 import {Observable, Subject} from "rxjs";
 import {BooksState} from "../../store/books.reducer";
 import {select, Store} from "@ngrx/store";
 import {BooksSelector} from "../../store/books.selectors";
-import {deselectBookAction, selectBookAction, setBooksAction} from "../../store/books.actions";
-import {takeUntil} from "rxjs/operators";
+import {
+  deselectBookAction,
+  loadBooksAction,
+  saveBookAction,
+  selectBookAction,
+} from "../../store/books.actions";
 
 @Component({
   selector: 'app-book-list',
@@ -21,13 +24,11 @@ export class BookListComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private readonly bookService: BookService, private readonly store: Store<BooksState>) {
+  constructor(private readonly store: Store<BooksState>) {
     console.log('BookListComponent constructed');
     this.books$ = this.store.pipe(select(BooksSelector.getBooks));
     this.selectedBook$ = this.store.pipe(select(BooksSelector.getSelectedBook));
-    this.bookService.getBooks()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(books => this.store.dispatch(setBooksAction({books})))
+    this.store.dispatch(loadBooksAction());
   }
 
   ngOnInit(): void {
@@ -53,14 +54,8 @@ export class BookListComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   saveBook(book: Book): void {
-    this.bookService.save(book)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.bookService.getBooks()
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(books => this.store.dispatch(setBooksAction({books})));
-        this.store.dispatch(deselectBookAction());
-      });
+    this.store.dispatch(saveBookAction({ book }));
+    this.store.dispatch(deselectBookAction());
   }
 
   cancelEditing(): void {
