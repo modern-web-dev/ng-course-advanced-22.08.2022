@@ -12,6 +12,7 @@ import {BOOKS_FEATURE, booksStateReducer} from "./store/books.reducer";
 import {EffectsModule} from "@ngrx/effects";
 import {BooksEffects} from "./store/books.effects";
 import {BooksRoutingModule} from "./books-routing.module";
+import {WidgetsModule} from "widgets";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {BooksRoutingModule} from "./books-routing.module";
     SharedModule,
     HttpClientModule,
     BooksRoutingModule,
+    WidgetsModule,
     StoreModule.forFeature(BOOKS_FEATURE, booksStateReducer),
     EffectsModule.forFeature([BooksEffects])
   ],

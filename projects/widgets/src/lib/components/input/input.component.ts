@@ -8,7 +8,7 @@ import {ControlValueAccessor, NgControl} from "@angular/forms";
 })
 export class InputComponent implements ControlValueAccessor {
 
-  @ViewChild("editor", { static: true })
+  @ViewChild("editor", {static: true})
   inputElement!: ElementRef<HTMLInputElement>;
 
   @Input()
@@ -20,9 +20,11 @@ export class InputComponent implements ControlValueAccessor {
   @Input()
   mandatory = false;
 
-  onChangeCallback: (value: any) => void = (_: string) => {};
+  onChangeCallback: (value: any) => void = (_: string) => {
+  };
 
-  onTouchedCallback: () => void = () => {};
+  onTouchedCallback: () => void = () => {
+  };
 
   constructor(@Optional() @Self() public control: NgControl) {
     if (this.control) {
