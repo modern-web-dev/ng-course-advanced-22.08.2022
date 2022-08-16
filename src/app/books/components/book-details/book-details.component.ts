@@ -61,7 +61,7 @@ export class BookDetailsComponent implements OnInit, OnChanges, OnDestroy, After
   ngOnChanges(changes: SimpleChanges): void {
     console.log("BookDetailsComponent ngOnChanges");
     if(this.book && changes['book']) {
-      this.formGroup.setValue(this.book);
+      this.formGroup.reset(this.book);
     }
   }
 
