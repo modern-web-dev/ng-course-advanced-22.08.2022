@@ -8,7 +8,7 @@ import {BookService} from "../../services/book.service";
   styleUrls: ['./book-list.component.scss'],
   providers: [BookService]
 })
-export class BookListComponent implements OnInit {
+export class BookListComponent {
 
   @ViewChild("title")
   titleElement!: ElementRef<HTMLInputElement>;
@@ -23,15 +23,6 @@ export class BookListComponent implements OnInit {
 
   constructor(private readonly bookService: BookService) {
     this.books = this.bookService.getBooks();
-  }
-
-  // constructor(@Optional() bookService: BookService | null) {
-  //   if (bookService) {
-  //     this.books = bookService.getBooks();
-  //   }
-  // }
-
-  ngOnInit(): void {
   }
 
   saveButton(): void {
