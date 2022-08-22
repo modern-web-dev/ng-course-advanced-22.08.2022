@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+
+  @ViewChild("editor")
+  editor!: ElementRef<HTMLInputElement>;
+
+  title: string | undefined = 'app';
+
+  updateTitle(): void {
+    this.title = this.editor.nativeElement.value;
+  }
 }
