@@ -1,4 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {Book} from "../../model/book";
 import {BookService} from "../../services/book.service";
 
@@ -7,14 +16,8 @@ import {BookService} from "../../services/book.service";
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss']
 })
-export class BookListComponent {
+export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild("title")
-  titleElement!: ElementRef<HTMLInputElement>;
-  @ViewChild("author")
-  authorElement!: ElementRef<HTMLInputElement>;
-  @ViewChild("description")
-  descriptionElement!: ElementRef<HTMLTextAreaElement>;
 
   books: Book[] = [];
 
@@ -22,19 +25,22 @@ export class BookListComponent {
 
   constructor(private readonly bookService: BookService) {
     this.books = this.bookService.getBooks();
+    console.log('BookListComponent constructor');
   }
 
-  saveButton(): void {
-    if (this.selectedBook) {
-      const book: Book = {
-        id: this.selectedBook.id,
-        title: this.titleElement.nativeElement.value,
-        author: this.authorElement.nativeElement.value,
-        description: this.descriptionElement.nativeElement.value
-      };
-      this.bookService.saveBook(book);
-      this.selectedBook = null;
-      this.books = this.bookService.getBooks();
-    }
+  ngOnInit(): void {
+    console.log('BookListComponent ngOnInit');
+  }
+
+  ngOnDestroy(): void {
+    console.log('BookListComponent ngOnDestroy');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('BookListComponent ngOnChanges');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('BookListComponent ngAfterViewInit');
   }
 }
