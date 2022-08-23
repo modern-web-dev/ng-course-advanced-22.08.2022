@@ -3,6 +3,7 @@ import {BookService} from "../../services/book.service";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Book} from "../../model/book";
 import {BookDetailsComponent} from "../book-details/book-details.component";
+import {FormsModule} from "@angular/forms";
 
 describe('BookListComponent', () => {
 
@@ -30,7 +31,10 @@ describe('BookListComponent', () => {
     const detectChanges = () => fixture.detectChanges();
     const clickCancel = () => cancelButton().dispatchEvent(new MouseEvent('click'));
     const clickSave = () => saveButton().dispatchEvent(new MouseEvent('click'));
-    const editField = (field: HTMLInputElement | HTMLTextAreaElement, value: string) => field.value = value;
+    const editField = (field: HTMLInputElement | HTMLTextAreaElement, value: string) => {
+      field.value = value;
+      field.dispatchEvent(new Event('input'));
+    }
 
     beforeEach(async () => {
       books = [{
@@ -57,7 +61,8 @@ describe('BookListComponent', () => {
 
       await TestBed.configureTestingModule({
         declarations: [BookListComponent, BookDetailsComponent],
-        providers: [{ provide: BookService, useValue: bookService }]
+        imports: [FormsModule],
+        providers: [{provide: BookService, useValue: bookService}]
       }).compileComponents();
     });
 
@@ -72,7 +77,7 @@ describe('BookListComponent', () => {
       expect(component).toBeTruthy();
     })
 
-    it('shows an editor once a book is clicked', () => {
+    it('shows an editor once a book is clicked', async () => {
       // given
       expect(bookList().length).toEqual(3);
       expect(editor()).toBeFalsy();
@@ -80,6 +85,8 @@ describe('BookListComponent', () => {
       clickBookAt(1);
       detectChanges();
       // then
+      await fixture.whenStable();
+
       const book = component.selectedBook;
       expect(editor()).toBeTruthy();
       expect(titleElement().value).toBe(book!!.title);

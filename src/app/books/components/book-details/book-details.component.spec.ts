@@ -1,7 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BookDetailsComponent } from './book-details.component';
+import {BookDetailsComponent} from './book-details.component';
 import {Book} from "../../model/book";
+import {FormsModule} from "@angular/forms";
+import {SimpleChange} from "@angular/core";
 
 describe('BookDetailsComponent', () => {
   let component: BookDetailsComponent;
@@ -10,9 +12,10 @@ describe('BookDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BookDetailsComponent ]
+      declarations: [BookDetailsComponent],
+      imports: [FormsModule]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -25,6 +28,7 @@ describe('BookDetailsComponent', () => {
     fixture = TestBed.createComponent(BookDetailsComponent);
     component = fixture.componentInstance;
     component.selectedBook = book;
+    component.ngOnChanges({selectedBook: new SimpleChange(undefined, book, true)});
     fixture.detectChanges();
   });
 
