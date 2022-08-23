@@ -4,7 +4,16 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Book} from "../../model/book";
 import {BookDetailsComponent} from "../book-details/book-details.component";
 import {ReactiveFormsModule} from "@angular/forms";
-import {ErrorMsgPipe} from "../../../shared/pipes/error-msg.pipe";
+import {Pipe, PipeTransform} from "@angular/core";
+
+@Pipe({
+  name: 'errorMsg'
+})
+class MockedErrorMsgPipe implements PipeTransform {
+  transform(value: any, ...args: any[]): any {
+    return '';
+  }
+}
 
 describe('BookListComponent', () => {
 
@@ -61,7 +70,7 @@ describe('BookListComponent', () => {
       };
 
       await TestBed.configureTestingModule({
-        declarations: [BookListComponent, BookDetailsComponent, ErrorMsgPipe],
+        declarations: [BookListComponent, BookDetailsComponent, MockedErrorMsgPipe],
         imports: [ReactiveFormsModule],
         providers: [{provide: BookService, useValue: bookService}]
       }).compileComponents();
