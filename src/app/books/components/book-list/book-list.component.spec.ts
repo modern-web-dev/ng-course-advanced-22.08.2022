@@ -4,6 +4,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Book} from "../../model/book";
 import {BookDetailsComponent} from "../book-details/book-details.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {ErrorMsgPipe} from "../../../shared/pipes/error-msg.pipe";
 
 describe('BookListComponent', () => {
 
@@ -60,7 +61,7 @@ describe('BookListComponent', () => {
       };
 
       await TestBed.configureTestingModule({
-        declarations: [BookListComponent, BookDetailsComponent],
+        declarations: [BookListComponent, BookDetailsComponent, ErrorMsgPipe],
         imports: [ReactiveFormsModule],
         providers: [{provide: BookService, useValue: bookService}]
       }).compileComponents();
@@ -116,6 +117,7 @@ describe('BookListComponent', () => {
       editField(titleElement(), 'foo');
       editField(authorElement(), 'bar');
       editField(descriptionElement(), 'some other description');
+      detectChanges();
       clickSave();
       detectChanges();
       // then

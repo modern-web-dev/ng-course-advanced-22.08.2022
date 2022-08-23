@@ -4,6 +4,7 @@ import {BookDetailsComponent} from './book-details.component';
 import {Book} from "../../model/book";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SimpleChange} from "@angular/core";
+import {SharedModule} from "../../../shared/shared.module";
 
 describe('BookDetailsComponent', () => {
   let component: BookDetailsComponent;
@@ -13,7 +14,7 @@ describe('BookDetailsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BookDetailsComponent],
-      imports: [ReactiveFormsModule]
+      imports: [ReactiveFormsModule, SharedModule]
     })
       .compileComponents();
   });

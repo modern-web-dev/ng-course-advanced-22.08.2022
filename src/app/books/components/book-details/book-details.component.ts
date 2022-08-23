@@ -66,13 +66,4 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   cancel(): void {
     this.cancelClicked.emit();
   }
-
-  dumpErrors(errors: ValidationErrors | null): string {
-    if (errors) {
-      const errorKeys = Object.keys(errors);
-      return errorKeys.map(errorKey => errorToMessage(errorKey, errors[errorKey])).join(',');
-    } else {
-      return '';
-    }
-  }
 }
