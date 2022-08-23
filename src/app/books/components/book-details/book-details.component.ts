@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {Book} from "../../model/book";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-book-details',
@@ -32,9 +32,9 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
     console.log('BookDetailsComponent constructor');
     this.formGroup = new FormGroup({
       id: new FormControl(),
-      title: new FormControl(),
-      author: new FormControl(),
-      description: new FormControl()
+      title: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
+      author: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.maxLength(1000)])
     });
   }
 
@@ -50,7 +50,7 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
     console.log('BookDetailsComponent ngOnChanges');
     console.log(JSON.stringify(changes));
     if(changes.selectedBook) {
-        this.formGroup.setValue(this.selectedBook);
+        this.formGroup.reset(this.selectedBook);
     }
   }
 
