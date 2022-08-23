@@ -50,4 +50,8 @@ export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterVie
   cancel(): void {
     this.selectedBook = null;
   }
+
+  selectBook(book: Book): void {
+    this.selectedBook = book;
+  }
 }
