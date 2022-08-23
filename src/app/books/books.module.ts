@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BookListComponent } from './components/book-list/book-list.component';
 import {BookService} from "./services/book.service";
 import { BookDetailsComponent } from './components/book-details/book-details.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { BookDetailsComponent } from './components/book-details/book-details.com
     BookService
   ],
   imports: [
-    CommonModule
+    CommonModule, FormsModule
   ]
 })
 export class BooksModule { }
