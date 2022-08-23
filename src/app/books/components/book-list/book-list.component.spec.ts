@@ -2,6 +2,7 @@ import {BookListComponent} from "./book-list.component";
 import {BookService} from "../../services/book.service";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Book} from "../../model/book";
+import {BookDetailsComponent} from "../book-details/book-details.component";
 
 describe('BookListComponent', () => {
 
@@ -55,7 +56,7 @@ describe('BookListComponent', () => {
       };
 
       await TestBed.configureTestingModule({
-        declarations: [BookListComponent],
+        declarations: [BookListComponent, BookDetailsComponent],
         providers: [{ provide: BookService, useValue: bookService }]
       }).compileComponents();
     });
