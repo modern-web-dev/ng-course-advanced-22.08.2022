@@ -8,6 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {Book} from "../../model/book";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-book-details',
@@ -19,21 +20,26 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   @Input()
   selectedBook!: Book;
 
-  editedBook!: Book;
-
   @Output()
   saveClicked = new EventEmitter<Book>();
 
   @Output()
   cancelClicked = new EventEmitter<void>();
 
+  formGroup: FormGroup;
+
   constructor() {
     console.log('BookDetailsComponent constructor');
+    this.formGroup = new FormGroup({
+      id: new FormControl(),
+      title: new FormControl(),
+      author: new FormControl(),
+      description: new FormControl()
+    });
   }
 
   ngOnInit(): void {
     console.log('BookDetailsComponent ngOnInit');
-    // this.editedBook = {...this.selectedBook};
   }
 
   ngOnDestroy(): void {
@@ -44,7 +50,7 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
     console.log('BookDetailsComponent ngOnChanges');
     console.log(JSON.stringify(changes));
     if(changes.selectedBook) {
-      this.editedBook = {...this.selectedBook};
+        this.formGroup.setValue(this.selectedBook);
     }
   }
 
@@ -54,7 +60,7 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
 
   save(): void {
     if (this.selectedBook) {
-      this.saveClicked.emit(this.editedBook);
+      // this.saveClicked.emit(this.editedBook);
     }
   }
 
