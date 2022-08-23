@@ -9,5 +9,5 @@
 </ul>
 
 <section class="mt-4" *ngIf="selectedBook" id="editor">
-  <app-book-details [selectedBook]="selectedBook"></app-book-details>
+  <app-book-details [selectedBook]="selectedBook" (saveClicked)="saveBook($event)" (cancelClicked)="cancel()"></app-book-details>
 </section>

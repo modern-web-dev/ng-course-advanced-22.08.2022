@@ -1,12 +1,10 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
-  ViewChild
 } from '@angular/core';
 import {Book} from "../../model/book";
 import {BookService} from "../../services/book.service";
@@ -17,7 +15,6 @@ import {BookService} from "../../services/book.service";
   styleUrls: ['./book-list.component.scss']
 })
 export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterViewInit {
-
 
   books: Book[] = [];
 
@@ -42,5 +39,15 @@ export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit(): void {
     console.log('BookListComponent ngAfterViewInit');
+  }
+
+  saveBook(book: Book): void {
+    this.bookService.saveBook(book);
+    this.selectedBook = null;
+    this.books = this.bookService.getBooks();
+  }
+
+  cancel(): void {
+    this.selectedBook = null;
   }
 }

@@ -1,15 +1,14 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef, Input,
+  ElementRef, EventEmitter, Input,
   OnChanges,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {Book} from "../../model/book";
-import {BookService} from "../../services/book.service";
 
 @Component({
   selector: 'app-book-details',
@@ -28,7 +27,13 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   @Input()
   selectedBook!: Book;
 
-  constructor(private readonly bookService: BookService) {
+  @Output()
+  saveClicked = new EventEmitter<Book>();
+
+  @Output()
+  cancelClicked = new EventEmitter<void>();
+
+  constructor() {
     console.log('BookDetailsComponent constructor');
     console.log(JSON.stringify(this.titleElement));
   }
@@ -52,7 +57,7 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
     console.log(JSON.stringify(this.titleElement));
   }
 
-  saveButton(): void {
+  save(): void {
     if (this.selectedBook) {
       const book: Book = {
         id: this.selectedBook.id,
@@ -60,7 +65,11 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
         author: this.authorElement.nativeElement.value,
         description: this.descriptionElement.nativeElement.value
       };
-      this.bookService.saveBook(book);
+      this.saveClicked.emit(book);
     }
+  }
+
+  cancel(): void {
+    this.cancelClicked.emit();
   }
 }
