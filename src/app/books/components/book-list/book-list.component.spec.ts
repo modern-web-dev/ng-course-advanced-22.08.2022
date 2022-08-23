@@ -3,7 +3,7 @@ import {BookService} from "../../services/book.service";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Book} from "../../model/book";
 import {BookDetailsComponent} from "../book-details/book-details.component";
-import {FormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('BookListComponent', () => {
 
@@ -61,7 +61,7 @@ describe('BookListComponent', () => {
 
       await TestBed.configureTestingModule({
         declarations: [BookListComponent, BookDetailsComponent],
-        imports: [FormsModule],
+        imports: [ReactiveFormsModule],
         providers: [{provide: BookService, useValue: bookService}]
       }).compileComponents();
     });
@@ -77,7 +77,7 @@ describe('BookListComponent', () => {
       expect(component).toBeTruthy();
     })
 
-    it('shows an editor once a book is clicked', async () => {
+    it('shows an editor once a book is clicked', () => {
       // given
       expect(bookList().length).toEqual(3);
       expect(editor()).toBeFalsy();
@@ -85,8 +85,6 @@ describe('BookListComponent', () => {
       clickBookAt(1);
       detectChanges();
       // then
-      await fixture.whenStable();
-
       const book = component.selectedBook;
       expect(editor()).toBeTruthy();
       expect(titleElement().value).toBe(book!!.title);

@@ -59,9 +59,7 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   }
 
   save(): void {
-    if (this.selectedBook) {
-      // this.saveClicked.emit(this.editedBook);
-    }
+    this.saveClicked.emit(this.formGroup.value);
   }
 
   cancel(): void {

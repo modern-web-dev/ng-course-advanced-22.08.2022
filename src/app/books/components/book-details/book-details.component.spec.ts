@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {BookDetailsComponent} from './book-details.component';
 import {Book} from "../../model/book";
-import {FormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {SimpleChange} from "@angular/core";
 
 describe('BookDetailsComponent', () => {
@@ -13,7 +13,7 @@ describe('BookDetailsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BookDetailsComponent],
-      imports: [FormsModule]
+      imports: [ReactiveFormsModule]
     })
       .compileComponents();
   });
