@@ -1,8 +1,9 @@
 <h3>Edit selected book</h3>
 <form [formGroup]="formGroup">
   <div>
-    <label for="title" class="form-label">Title</label>
-    <input id="title" type="text" class="form-control" formControlName="title">
+    <app-input label="Title" inputId="title" formControlName="title"></app-input>
+<!--    <label for="title" class="form-label">Title</label>-->
+<!--    <input id="title" type="text" class="form-control" formControlName="title">-->
     <div class="invalid-feedback">
       Title is invalid.
       {{ formGroup.controls.title.errors | errorMsg : 'title' }}

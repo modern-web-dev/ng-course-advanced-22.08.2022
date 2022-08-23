@@ -1,0 +1,8 @@
+<label [for]="inputId" class="form-label">{{ label }}</label>
+<input [id]="inputId"
+       type="text"
+       class="form-control"
+       [ngModel]="innerValue"
+       (blur)="touched()"
+       (ngModelChange)="valueChanged($event)"
+       [disabled]="disabled">
