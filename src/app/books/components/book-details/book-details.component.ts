@@ -33,7 +33,7 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
     console.log('BookDetailsComponent constructor');
     this.formGroup = new FormGroup({
       id: new FormControl(),
-      title: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
+      title: new FormControl({value: '', disabled: true}, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
       author: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.maxLength(1000)])
     });

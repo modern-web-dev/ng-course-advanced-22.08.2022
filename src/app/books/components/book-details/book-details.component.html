@@ -27,5 +27,7 @@
   <div class="mt-3 nav justify-content-end d-md-flex gap-2">
     <button id="save" class="btn btn-primary" (click)="save()" [disabled]="formGroup.invalid || formGroup.pristine">Save</button>
     <button id="cancel" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    <button class="btn btn-secondary" (click)="formGroup.controls.title.disable()">Disable</button>
+    <button class="btn btn-secondary" (click)="formGroup.enable()">Enable</button>
   </div>
 </form>
