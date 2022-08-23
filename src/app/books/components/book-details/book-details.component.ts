@@ -8,7 +8,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {Book} from "../../model/book";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {errorToMessage} from "../../../shared/util/error-util";
 
 @Component({
   selector: 'app-book-details',
@@ -64,5 +65,14 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
 
   cancel(): void {
     this.cancelClicked.emit();
+  }
+
+  dumpErrors(errors: ValidationErrors | null): string {
+    if (errors) {
+      const errorKeys = Object.keys(errors);
+      return errorKeys.map(errorKey => errorToMessage(errorKey, errors[errorKey])).join(',');
+    } else {
+      return '';
+    }
   }
 }
