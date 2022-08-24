@@ -1,13 +1,13 @@
 <ul class="list-group">
   <li
     class="list-group-item clickable"
-    [ngClass]="{ selected: book == selectedBook }"
+    [ngClass]="{ selected: book == (selectedBook$ | async) }"
     *ngFor="let book of books$ | async"
     (click)="selectBook(book)">
     {{ book.title }}, <em>{{ book.author }}</em>
   </li>
 </ul>
 
-<section class="mt-4" *ngIf="selectedBook" id="editor">
-  <app-book-details [selectedBook]="selectedBook" (saveClicked)="saveBook($event)" (cancelClicked)="cancel()"></app-book-details>
+<section class="mt-4" *ngIf="selectedBook$ | async" id="editor">
+  <app-book-details [selectedBook]="selectedBook$ | async" (saveClicked)="saveBook($event)" (cancelClicked)="cancel()"></app-book-details>
 </section>

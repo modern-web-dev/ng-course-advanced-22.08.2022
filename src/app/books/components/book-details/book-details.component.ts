@@ -21,7 +21,7 @@ import {EditionDetailsComponent} from "./edition-details/edition-details.compone
 export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
   @Input()
-  selectedBook!: Book;
+  selectedBook!: Book | null;
 
   @Output()
   saveClicked = new EventEmitter<Book>();

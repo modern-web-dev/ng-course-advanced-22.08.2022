@@ -1,14 +1,11 @@
-import {
-  AfterViewInit,
-  Component,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges,} from '@angular/core';
 import {Book} from "../../model/book";
 import {BookService} from "../../services/book.service";
 import {Observable} from "rxjs";
+import {BooksState} from "../../store/books.reducer";
+import {select, Store} from "@ngrx/store";
+import {BooksSelector} from "../../store/books.selectors";
+import {deselectBookAction, selectBookAction, setBooksAction} from "../../store/books.actions";
 
 @Component({
   selector: 'app-book-list',
@@ -17,13 +14,16 @@ import {Observable} from "rxjs";
 })
 export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
-  books$: Observable<Book[]>;
+  readonly books$: Observable<Book[]>;
+  readonly selectedBook$: Observable<Book | null>;
 
-  selectedBook: Book | null = null;
-
-  constructor(private readonly bookService: BookService) {
+  constructor(private readonly bookService: BookService, private readonly store: Store<BooksState>) {
     console.log('BookListComponent constructor');
-    this.books$ = this.bookService.getBooks();
+    this.books$ = this.store.pipe(select(BooksSelector.getBooks));
+    this.selectedBook$ = this.store.pipe(select(BooksSelector.getSelectedBook));
+
+    this.bookService.getBooks()
+      .subscribe(books => this.store.dispatch(setBooksAction({books})));
   }
 
   ngOnInit(): void {
@@ -44,16 +44,16 @@ export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterVie
 
   saveBook(book: Book): void {
     this.bookService.saveBook(book).subscribe(_ => {
-      this.selectedBook = null;
-      this.books$ = this.bookService.getBooks();
+      this.store.dispatch(deselectBookAction());
+      this.bookService.getBooks().subscribe(books => this.store.dispatch(setBooksAction({books})));
     });
   }
 
   cancel(): void {
-    this.selectedBook = null;
+    this.store.dispatch(deselectBookAction());
   }
 
   selectBook(book: Book): void {
-    this.selectedBook = book;
+    this.store.dispatch(selectBookAction({book}));
   }
 }
