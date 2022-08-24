@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {Book} from "../../model/book";
 import {BookService} from "../../services/book.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-book-list',
@@ -16,13 +17,13 @@ import {BookService} from "../../services/book.service";
 })
 export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
-  books: Book[] = [];
+  books$: Observable<Book[]>;
 
   selectedBook: Book | null = null;
 
   constructor(private readonly bookService: BookService) {
-    this.books = this.bookService.getBooks();
     console.log('BookListComponent constructor');
+    this.books$ = this.bookService.getBooks();
   }
 
   ngOnInit(): void {
@@ -42,9 +43,10 @@ export class BookListComponent implements OnChanges, OnInit, OnDestroy, AfterVie
   }
 
   saveBook(book: Book): void {
-    this.bookService.saveBook(book);
-    this.selectedBook = null;
-    this.books = this.bookService.getBooks();
+    this.bookService.saveBook(book).subscribe(_ => {
+      this.selectedBook = null;
+      this.books$ = this.bookService.getBooks();
+    });
   }
 
   cancel(): void {

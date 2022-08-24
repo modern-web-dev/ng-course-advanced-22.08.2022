@@ -2,7 +2,7 @@
   <li
     class="list-group-item clickable"
     [ngClass]="{ selected: book == selectedBook }"
-    *ngFor="let book of books"
+    *ngFor="let book of books$ | async"
     (click)="selectBook(book)">
     {{ book.title }}, <em>{{ book.author }}</em>
   </li>
