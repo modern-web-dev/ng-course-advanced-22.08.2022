@@ -7,10 +7,11 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges, ViewChild,
 } from '@angular/core';
 import {Book} from "../../model/book";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {EditionDetailsComponent} from "./edition-details/edition-details.component";
 
 @Component({
   selector: 'app-book-details',
@@ -28,16 +29,17 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   @Output()
   cancelClicked = new EventEmitter<void>();
 
+  @ViewChild(EditionDetailsComponent, { static: true })
+  set editionDetailsComponent(component: EditionDetailsComponent) {
+    console.log('editionDetailComponent is injected');
+    this.formGroup.addControl('edition', component.formGroup);
+  }
+
   readonly formGroup: FormGroup;
-  readonly editionFormGroup: FormGroup;
 
   constructor() {
     console.log('BookDetailsComponent constructor');
-    this.editionFormGroup = new FormGroup({
-      publisher: new FormControl(),
-      publishYear: new FormControl(),
-      editionNumber: new FormControl()
-    });
+
     this.formGroup = new FormGroup({
       id: new FormControl(),
       title: new FormControl({
@@ -45,8 +47,7 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
         disabled: false
       }, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
       author: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.maxLength(1000)]),
-      edition: this.editionFormGroup
+      description: new FormControl('', [Validators.maxLength(1000)])
     });
   }
 
