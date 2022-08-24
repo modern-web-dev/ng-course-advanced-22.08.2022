@@ -32,8 +32,11 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   @ViewChild(EditionDetailsComponent, { static: true })
   set editionDetailsComponent(component: EditionDetailsComponent) {
     console.log('editionDetailComponent is injected');
-    this.formGroup.addControl('edition', component.formGroup);
+    this.formGroup.addControl('edition', component.form.formGroup);
+    this.edition = component;
   }
+
+  private edition!: EditionDetailsComponent;
 
   readonly formGroup: FormGroup;
 
@@ -72,7 +75,14 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   }
 
   save(): void {
-    this.saveClicked.emit(this.formGroup.value);
+    const book: Book = {
+      id: Number.parseInt(this.formGroup.controls.id.value),
+      title: this.formGroup.controls.title.value,
+      author: this.formGroup.controls.author.value,
+      description: this.formGroup.controls.description.value,
+      edition: this.edition.form.extract()
+    };
+    this.saveClicked.emit(book);
   }
 
   cancel(): void {
