@@ -17,6 +17,9 @@ export class InputComponent implements ControlValueAccessor, AfterViewInit {
   @Input()
   inputId!: string;
 
+  @Input()
+  type: 'text' | 'number' | undefined;
+
   private preValue: string | null = null;
   private preDisabled: boolean | null = null;
 
