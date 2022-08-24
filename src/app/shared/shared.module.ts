@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorMsgPipe } from './pipes/error-msg.pipe';
 import { InputComponent } from './components/input/input.component';
-import {FormsModule} from "@angular/forms";
 
 
 
@@ -16,8 +15,7 @@ import {FormsModule} from "@angular/forms";
     InputComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule
+    CommonModule
   ]
 })
 export class SharedModule { }

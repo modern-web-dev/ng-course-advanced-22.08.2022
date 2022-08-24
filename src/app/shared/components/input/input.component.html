@@ -1,12 +1,11 @@
 <label [for]="inputId" class="form-label">{{ label }}</label>
-<input [id]="inputId"
+<input #input
+       [id]="inputId"
        type="text"
        class="form-control"
-       [ngModel]="innerValue"
-       [ngClass]="{'ng-invalid': formControl?.invalid, 'ng-valid': formControl?.valid }"
-       (blur)="touched()"
-       (ngModelChange)="valueChanged($event)"
-       [disabled]="disabled">
+       [ngClass]="{'ng-invalid': formControl?.invalid, 'ng-valid': formControl?.valid, 'ng-touched': formControl?.touched, 'ng-untouched': formControl?.untouched }"
+       (input)="valueChanged()"
+       (blur)="touched()">
 <div class="invalid-feedback">
   {{ formControl?.errors | errorMsg : (label | lowercase)}}
 </div>

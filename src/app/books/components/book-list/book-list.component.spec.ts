@@ -88,14 +88,13 @@ describe('BookListComponent', () => {
       expect(component).toBeTruthy();
     })
 
-    it('shows an editor once a book is clicked', async () => {
+    it('shows an editor once a book is clicked', () => {
       // given
       expect(bookList().length).toEqual(3);
       expect(editor()).toBeFalsy();
       // when
       clickBookAt(1);
       detectChanges();
-      await fixture.whenStable();
       // then
       const book = component.selectedBook;
       expect(editor()).toBeTruthy();

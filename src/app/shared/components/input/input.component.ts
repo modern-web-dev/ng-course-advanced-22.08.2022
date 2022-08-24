@@ -1,4 +1,4 @@
-import {Component, Input, Optional, Self} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, Optional, Self, ViewChild} from '@angular/core';
 import {ControlValueAccessor, NgControl} from "@angular/forms";
 
 @Component({
@@ -6,7 +6,10 @@ import {ControlValueAccessor, NgControl} from "@angular/forms";
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent implements ControlValueAccessor {
+export class InputComponent implements ControlValueAccessor, AfterViewInit {
+
+  @ViewChild('input', { static: true })
+  inputElement: ElementRef<HTMLInputElement> | undefined;
 
   @Input()
   label!: string;
@@ -14,9 +17,8 @@ export class InputComponent implements ControlValueAccessor {
   @Input()
   inputId!: string;
 
-  innerValue: string = '';
-
-  disabled = false;
+  private preValue: string | null = null;
+  private preDisabled: boolean | null = null;
 
   private onChangeCallback: (value: string) => void = () => {
   };
@@ -38,19 +40,37 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    if(this.inputElement) {
+      this.inputElement.nativeElement.disabled = isDisabled;
+    } else {
+      this.preDisabled = isDisabled;
+    }
   }
 
   writeValue(value: string): void {
-    this.innerValue = value;
+    if(this.inputElement) {
+      this.inputElement.nativeElement.value = value;
+    } else {
+      this.preValue = value;
+    }
   }
 
-  valueChanged(value: string): void {
-    this.innerValue = value;
-    this.onChangeCallback(value);
+  valueChanged(): void {
+    if(this.inputElement) {
+      this.onChangeCallback(this.inputElement.nativeElement.value);
+    }
   }
 
   touched(): void {
     this.onTouchedCallback();
+  }
+
+  ngAfterViewInit(): void {
+    if(this.inputElement && this.preValue) {
+      this.inputElement.nativeElement.value = this.preValue;
+    }
+    if(this.inputElement && this.preDisabled) {
+      this.inputElement.nativeElement.disabled = this.preDisabled;
+    }
   }
 }
