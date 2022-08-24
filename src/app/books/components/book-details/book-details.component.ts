@@ -1,15 +1,16 @@
 import {
   AfterViewInit,
   Component,
-  EventEmitter, Input,
+  EventEmitter,
+  Input,
   OnChanges,
   OnDestroy,
-  OnInit, Output,
+  OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import {Book} from "../../model/book";
-import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {errorToMessage} from "../../../shared/util/error-util";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-book-details',
@@ -27,20 +28,25 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   @Output()
   cancelClicked = new EventEmitter<void>();
 
-  formGroup: FormGroup;
+  readonly formGroup: FormGroup;
+  readonly editionFormGroup: FormGroup;
 
   constructor() {
     console.log('BookDetailsComponent constructor');
+    this.editionFormGroup = new FormGroup({
+      publisher: new FormControl(),
+      publishYear: new FormControl(),
+      editionNumber: new FormControl()
+    });
     this.formGroup = new FormGroup({
       id: new FormControl(),
-      title: new FormControl({value: '', disabled: false}, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
+      title: new FormControl({
+        value: '',
+        disabled: false
+      }, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
       author: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.maxLength(1000)]),
-      edition: new FormGroup({
-        publisher: new FormControl(),
-        publishYear: new FormControl(),
-        editionNumber: new FormControl()
-      })
+      edition: this.editionFormGroup
     });
   }
 
@@ -55,8 +61,8 @@ export class BookDetailsComponent implements OnChanges, OnInit, OnDestroy, After
   ngOnChanges(changes: SimpleChanges): void {
     console.log('BookDetailsComponent ngOnChanges');
     console.log(JSON.stringify(changes));
-    if(changes.selectedBook) {
-        this.formGroup.reset(this.selectedBook);
+    if (changes.selectedBook) {
+      this.formGroup.reset(this.selectedBook);
     }
   }
 

@@ -1,6 +1,6 @@
 import {BookListComponent} from "./book-list.component";
 import {BookService} from "../../services/book.service";
-import {ComponentFixture, fakeAsync, TestBed, tick} from "@angular/core/testing";
+import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Book} from "../../model/book";
 import {BookDetailsComponent} from "../book-details/book-details.component";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -8,6 +8,7 @@ import {Pipe, PipeTransform} from "@angular/core";
 import {SharedModule} from "../../../shared/shared.module";
 import {of} from "rxjs";
 import {books} from "../../services/test-books";
+import {EditionDetailsComponent} from "../book-details/edition-details/edition-details.component";
 
 @Pipe({
   name: 'errorMsg'
@@ -64,7 +65,7 @@ describe('BookListComponent', () => {
       };
 
       await TestBed.configureTestingModule({
-        declarations: [BookListComponent, BookDetailsComponent],
+        declarations: [BookListComponent, BookDetailsComponent, EditionDetailsComponent],
         imports: [ReactiveFormsModule, SharedModule],
         providers: [{provide: BookService, useValue: bookService}]
       }).compileComponents();
@@ -129,7 +130,12 @@ describe('BookListComponent', () => {
         id: 2,
         title: 'foo',
         author: 'bar',
-        description: 'some other description'
+        description: 'some other description',
+        edition: {
+          publisher: 'Amazon',
+          publishYear: 1990,
+          editionNumber: 1
+        }
       });
     });
   });
@@ -150,7 +156,12 @@ describe('BookListComponent', () => {
         id: 1,
         title: 'foo',
         author: 'bar',
-        description: 'abc'
+        description: 'abc',
+        edition: {
+          publisher: 'Amazon',
+          publishYear: 1990,
+          editionNumber: 1
+        }
       };
       // when
       component.selectBook(book);

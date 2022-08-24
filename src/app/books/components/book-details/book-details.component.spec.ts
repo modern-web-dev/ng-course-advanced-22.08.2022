@@ -24,7 +24,12 @@ describe('BookDetailsComponent', () => {
       id: 0,
       title: 'foo',
       author: 'bar',
-      description: 'abc'
+      description: 'abc',
+      edition: {
+        publisher: 'Amazon',
+        publishYear: 1990,
+        editionNumber: 1
+      }
     }
     fixture = TestBed.createComponent(BookDetailsComponent);
     component = fixture.componentInstance;
