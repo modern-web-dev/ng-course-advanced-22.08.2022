@@ -5,6 +5,7 @@ import {Book} from "../../model/book";
 import {BookDetailsComponent} from "../book-details/book-details.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Pipe, PipeTransform} from "@angular/core";
+import {SharedModule} from "../../../shared/shared.module";
 
 @Pipe({
   name: 'errorMsg'
@@ -70,8 +71,8 @@ describe('BookListComponent', () => {
       };
 
       await TestBed.configureTestingModule({
-        declarations: [BookListComponent, BookDetailsComponent, MockedErrorMsgPipe],
-        imports: [ReactiveFormsModule],
+        declarations: [BookListComponent, BookDetailsComponent],
+        imports: [ReactiveFormsModule, SharedModule],
         providers: [{provide: BookService, useValue: bookService}]
       }).compileComponents();
     });
@@ -87,13 +88,14 @@ describe('BookListComponent', () => {
       expect(component).toBeTruthy();
     })
 
-    it('shows an editor once a book is clicked', () => {
+    it('shows an editor once a book is clicked', async () => {
       // given
       expect(bookList().length).toEqual(3);
       expect(editor()).toBeFalsy();
       // when
       clickBookAt(1);
       detectChanges();
+      await fixture.whenStable();
       // then
       const book = component.selectedBook;
       expect(editor()).toBeTruthy();
