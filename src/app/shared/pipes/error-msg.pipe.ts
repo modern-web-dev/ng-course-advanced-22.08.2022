@@ -8,7 +8,7 @@ import {errorToMessage} from "../util/error-util";
 })
 export class ErrorMsgPipe implements PipeTransform {
 
-  transform(errors: ValidationErrors | null, fieldName: string): string {
+  transform(errors: ValidationErrors | null | undefined, fieldName: string): string {
     console.log('ErrorMsgPipe is called!');
     if (errors) {
       const errorKeys = Object.keys(errors);

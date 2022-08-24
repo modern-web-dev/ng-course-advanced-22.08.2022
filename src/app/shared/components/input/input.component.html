@@ -3,6 +3,10 @@
        type="text"
        class="form-control"
        [ngModel]="innerValue"
+       [ngClass]="{'ng-invalid': formControl?.invalid, 'ng-valid': formControl?.valid }"
        (blur)="touched()"
        (ngModelChange)="valueChanged($event)"
        [disabled]="disabled">
+<div class="invalid-feedback">
+  {{ formControl?.errors | errorMsg : (label | lowercase)}}
+</div>

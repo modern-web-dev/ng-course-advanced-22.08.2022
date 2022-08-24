@@ -1,17 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Component, Input, Optional, Self} from '@angular/core';
+import {ControlValueAccessor, NgControl} from "@angular/forms";
 
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: InputComponent,
-      multi: true
-    }
-  ]
+  styleUrls: ['./input.component.scss']
 })
 export class InputComponent implements ControlValueAccessor {
 
@@ -25,10 +18,16 @@ export class InputComponent implements ControlValueAccessor {
 
   disabled = false;
 
-  private onChangeCallback: (value: string) => void = () => {};
-  private onTouchedCallback: () => void = () => {};
+  private onChangeCallback: (value: string) => void = () => {
+  };
+  private onTouchedCallback: () => void = () => {
+  };
 
-  constructor() { }
+  constructor(@Optional() @Self() public formControl: NgControl | null) {
+    if (this.formControl) {
+      this.formControl.valueAccessor = this;
+    }
+  }
 
   registerOnChange(fn: (value: string) => void): void {
     this.onChangeCallback = fn;
