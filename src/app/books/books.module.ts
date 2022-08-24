@@ -7,6 +7,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {HttpClientModule} from "@angular/common/http";
 import { EditionDetailsComponent } from './components/book-details/edition-details/edition-details.component';
+import {StoreModule} from "@ngrx/store";
+import {BOOKS_FEATURE, booksStateReducer} from "./store/books.reducer";
 
 @NgModule({
   declarations: [
@@ -21,7 +23,11 @@ import { EditionDetailsComponent } from './components/book-details/edition-detai
     BookService
   ],
   imports: [
-    CommonModule, ReactiveFormsModule, SharedModule, HttpClientModule
+    CommonModule,
+    ReactiveFormsModule,
+    SharedModule,
+    HttpClientModule,
+    StoreModule.forFeature(BOOKS_FEATURE, booksStateReducer)
   ]
 })
 export class BooksModule {
