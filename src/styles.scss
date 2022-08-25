@@ -4,3 +4,13 @@
 .form-control.ng-invalid.ng-touched {
    @extend .is-invalid
 }
+
+.clickable {
+  &:hover {
+    background-color: lightblue;
+  }
+  cursor: pointer;
+  &.selected {
+    background-color: cornflowerblue;
+  }
+}
