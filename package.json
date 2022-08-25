@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "start:backend": "json-server backend/database.json --routes backend/routes.json",
     "test": "ng test",
-    "test:prod": "ng test --browsers=ChromeHeadless --watch=false"
+    "test:prod": "ng test --browsers=ChromeHeadless --watch=false",
+    "widgets:publish": "ng build widgets --configuration production && cd dist/widgets && npm publish --registry http://repository.int.kn/repository/seaquote"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +26,7 @@
     "bootstrap": "^5.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
+    "widgets": "^0.0.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

@@ -11,7 +11,7 @@ import {BOOKS_FEATURE, booksStateReducer} from "./store/books.reducer";
 import {EffectsModule} from "@ngrx/effects";
 import {BooksEffects} from "./store/books.effects";
 import {BooksRoutingModule} from "./books-routing.module";
-import {WidgetsModule} from "../../../projects/widgets/src/lib/widgets.module";
+import {WidgetsModule} from "widgets";
 
 @NgModule({
   declarations: [
